@@ -16,19 +16,18 @@ module Lita
 
       on(:loaded) do
         log.info "Starting Keepalive to #{config.url}/ping"
+
         every(config.minutes * 60) do
           log.info 'Trying to run Keepalive!!!'
-          log.info workin_hours?
 
           if workin_hours?
             log.info 'Out of working hours!!!'
-            next
+          else
+            log.info 'Keepalive ping...'
+            http.get "#{config.url}/ping"
           end
-          log.info 'Keepalive ping...'
-          http.get "#{config.url}/ping"
         end
       end
-
     end
 
     Lita.register_handler(Keepalive)
