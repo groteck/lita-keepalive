@@ -14,7 +14,7 @@ module Lita
         log.debug Time.now.strftime('%H')
 
         !config.end_hour.nil? &&
-          Time.now.strftime('%H').to_i > config.end_hour
+          Time.now.strftime('%H').to_i < config.end_hour
       end
 
       on(:loaded) do
