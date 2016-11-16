@@ -10,9 +10,6 @@ module Lita
       end
 
       def workin_hours?
-        log.debug config.end_hour
-        log.debug Time.now.strftime('%H')
-
         !config.end_hour.nil? &&
           Time.now.strftime('%H').to_i < config.end_hour
       end
