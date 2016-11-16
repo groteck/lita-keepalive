@@ -10,21 +10,24 @@ module Lita
       end
 
       def workin_hours?
-        !config.end_time.nil? &&
+        log.debug config.end_hour
+        log.debug Time.now.strftime('%H')
+
+        !config.end_hour.nil? &&
           Time.now.strftime('%H').to_i > config.end_hour
       end
 
       on(:loaded) do
-        log.info "Starting Keepalive to #{config.url}/ping"
+        log.debug "Starting Keepalive to #{config.url}/ping"
 
         every(config.minutes * 60) do
-          log.info 'Trying to run Keepalive!!!'
+          log.debug 'Trying to run Keepalive!!!'
 
           if workin_hours?
-            log.info 'Out of working hours!!!'
-          else
-            log.info 'Keepalive ping...'
+            log.info 'Keepalive the bot we are working, ping...'
             http.get "#{config.url}/ping"
+          else
+            log.info 'Out of working hours going to sleep!!!'
           end
         end
       end
